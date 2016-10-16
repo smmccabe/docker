@@ -53,8 +53,8 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 RUN php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} && rm -rf /tmp/composer-setup.php
 
 #allows for parallel composer downloads
-RUN composer global require "hirak/prestissimo:^0.3"
+#RUN composer global require "hirak/prestissimo:^0.3"
 
 #drupal console
-RUN composer global require drupal/console:@stable \
-  && echo "PATH=$PATH:~/.composer/vendor/bin" >> ~/.bash_profile
+#RUN composer global require drupal/console:@stable \
+#  && echo "PATH=$PATH:~/.composer/vendor/bin" >> ~/.bash_profile
