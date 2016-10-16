@@ -6,7 +6,7 @@ RUN a2enmod rewrite
 RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev mysql-client git \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip
+	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath
   
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
 
@@ -34,3 +34,15 @@ RUN php -r "readfile('https://s3.amazonaws.com/files.drush.org/drush.phar');" > 
 RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
  && chmod +x phpcs.phar \
  && mv phpcs.phar /usr/local/bin/phpcs
+ 
+#composer
+RUN curl --silent --show-error https://getcomposer.org/installer | php \
+  && chmod +x composer \\
+  && mv composer.phar /usr/local/bin/composer
+
+#allows for parallel composer downloads
+RUN composer global require "hirak/prestissimo:^0.3"
+
+#drupal console
+RUN composer global require drupal/console:@stable \
+  && echo "PATH=$PATH:~/.composer/vendor/bin" >> ~/.bash_profile
