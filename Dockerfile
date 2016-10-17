@@ -29,12 +29,7 @@ RUN curl -L https://github.com/etsy/phan/releases/download/0.6/phan.phar -o phan
 RUN php -r "readfile('https://s3.amazonaws.com/files.drush.org/drush.phar');" > drush \
   && chmod +x drush \
   && mv drush /usr/local/bin
-  
-#code standards
-RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
- && chmod +x phpcs.phar \
- && mv phpcs.phar /usr/local/bin/phpcs
- 
+   
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
 
@@ -52,5 +47,12 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 RUN composer global require "hirak/prestissimo:^0.3"
 
 #drupal console
-RUN composer global require drupal/console:@stable \
-  && echo "PATH=$PATH:~/.composer/vendor/bin" >> ~/.bash_profile
+RUN composer global require drupal/console:@stable
+  
+#code standards
+RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
+ && chmod +x phpcs.phar \
+ && mv phpcs.phar /usr/local/bin/phpcs
+ 
+RUN composer global require drupal/coder \
+  && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
