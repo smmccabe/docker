@@ -56,5 +56,13 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
  
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
+  
+RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
+  && bash nodesource_setup.sh \
+  && rm nodesource_setup.sh \
+  && apt-get install -y nodejs
+  
+RUN npm install -g gulp-cli \
+  && npm install -g gulp-sass
 
 RUN curl -sS https://platform.sh/cli/installer | php
