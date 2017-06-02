@@ -62,8 +62,9 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
   && rm nodesource_setup.sh \
   && apt-get install -y nodejs
 
-RUN npm install -g gulp-cli \
-  && npm install -g gulp-sass
+RUN npm install -g yarn \
+  && yarn install -g gulp-cli \
+  && yarn install -g gulp-sass
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
