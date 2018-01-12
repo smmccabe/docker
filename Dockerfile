@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:apache
 
 RUN a2enmod rewrite
 
@@ -67,7 +67,7 @@ RUN npm install -g gulp-cli \
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
-RUN pecl install xdebug \
+RUN pecl install xdebug-2.6.0beta1 \
     && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
 
 # Install SensioLabs' security advisories checker
