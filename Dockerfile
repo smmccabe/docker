@@ -71,6 +71,6 @@ RUN pecl install xdebug \
     && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
 
 # Install SensioLabs' security advisories checker
-RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar
-  && chmod +x security-checker.phar
+RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
+  && chmod +x security-checker.phar \
   && mv security-checker.phar /usr/local/bin/security-checker
