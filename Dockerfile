@@ -67,9 +67,6 @@ RUN npm install -g gulp-cli \
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
-RUN pecl install xdebug-2.6.0beta1 \
-    && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
-
 # Install SensioLabs' security advisories checker
 RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
   && chmod +x security-checker.phar \
