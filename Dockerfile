@@ -71,3 +71,7 @@ RUN curl -sS https://platform.sh/cli/installer | php
 RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
   && chmod +x security-checker.phar \
   && mv security-checker.phar /usr/local/bin/security-checker
+
+# Xdebug requires beta to support PHP 7.2.
+RUN pecl install xdebug-2.6.0beta1 \
+    && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
