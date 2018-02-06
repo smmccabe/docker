@@ -3,7 +3,8 @@ FROM php:apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev \
+
+RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap
@@ -69,10 +70,11 @@ RUN yarn install -g gulp-cli \
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
-RUN pecl install xdebug \
-    && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
-
 # Install SensioLabs' security advisories checker
 RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
   && chmod +x security-checker.phar \
   && mv security-checker.phar /usr/local/bin/security-checker
+
+# Xdebug requires beta to support PHP 7.2.
+RUN pecl install xdebug-2.6.0beta1 \
+    && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
