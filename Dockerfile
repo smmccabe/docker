@@ -3,6 +3,7 @@ FROM php:apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
+
 RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
