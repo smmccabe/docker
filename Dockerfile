@@ -4,10 +4,11 @@ RUN a2enmod rewrite
 
 # install the PHP extensions we need
 
-RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap
+RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev libxml2-dev
+RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
+RUN rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
+RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap
 
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
 
@@ -65,8 +66,9 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN yarn install -g gulp-cli \
-  && yarn install -g gulp-sass
+RUN export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" \
+  && yarn global add  gulp-cli \
+  && yarn global add gulp-sass
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
