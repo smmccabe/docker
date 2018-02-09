@@ -28,9 +28,9 @@ RUN curl -L https://github.com/etsy/phan/releases/download/0.6/phan.phar -o phan
   && mv phan.phar /usr/local/bin/phan
 
 #install drush, to use for site and module installs
-RUN php -r "readfile('https://s3.amazonaws.com/files.drush.org/drush.phar');" > drush \
-  && chmod +x drush \
-  && mv drush /usr/local/bin
+RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
+  && chmod +x drush.phar \
+  && mv drush.phar /usr/local/bin
 
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
@@ -49,7 +49,9 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 RUN composer global require "hirak/prestissimo:^0.3"
 
 #drupal console
-RUN composer global require drupal/console:@stable
+RUN curl https://drupalconsole.com/installer -L -o drupal.phar \
+  && chmod +x drupal.phar \
+  && mv drupal.phar /usr/local/bin/drupal
 
 #code standards
 RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
@@ -70,7 +72,9 @@ RUN export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PA
   && yarn global add  gulp-cli \
   && yarn global add gulp-sass
 
-RUN curl -sS https://platform.sh/cli/installer | php
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update && apt-get install yarn
 
 # Install SensioLabs' security advisories checker
 RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
