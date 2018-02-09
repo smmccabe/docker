@@ -28,9 +28,9 @@ RUN curl -L https://github.com/etsy/phan/releases/download/0.6/phan.phar -o phan
   && mv phan.phar /usr/local/bin/phan
 
 #install drush, to use for site and module installs
-RUN php -r "readfile('https://s3.amazonaws.com/files.drush.org/drush.phar');" > drush \
-  && chmod +x drush \
-  && mv drush /usr/local/bin
+RUN wget -O drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
+  && chmod +x drush.phar \
+  && mv drush.phar /usr/local/bin
 
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
