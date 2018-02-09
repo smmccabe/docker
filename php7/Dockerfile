@@ -65,7 +65,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
   && apt-get install -y nodejs
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
-  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list \
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update && apt-get install yarn
 
 RUN curl -sS https://platform.sh/cli/installer | php
