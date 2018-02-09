@@ -49,7 +49,9 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 RUN composer global require "hirak/prestissimo:^0.3"
 
 #drupal console
-RUN composer global require drupal/console:@stable
+RUN curl https://drupalconsole.com/installer -L -o drupal.phar \
+  && chmod +x drupal.phar \
+  && mv drupal.phar /usr/local/bin/drupal
 
 #code standards
 RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
