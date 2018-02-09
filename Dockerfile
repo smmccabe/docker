@@ -72,7 +72,9 @@ RUN export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PA
   && yarn global add  gulp-cli \
   && yarn global add gulp-sass
 
-RUN curl -sS https://platform.sh/cli/installer | php
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update && apt-get install yarn
 
 # Install SensioLabs' security advisories checker
 RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
