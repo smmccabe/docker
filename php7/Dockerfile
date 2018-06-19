@@ -3,10 +3,11 @@ FROM php:7.1-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev
+RUN apt-get update && apt-get install -y gnupg
+RUN rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
+RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp
 
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
 
@@ -19,11 +20,6 @@ RUN git clone https://github.com/nikic/php-ast.git \
   && echo 'extension=ast.so' > /usr/local/etc/php/conf.d/ast.ini \
   && cd .. \
   && rm php-ast -rf
-
-#install phan
-RUN curl -L https://github.com/etsy/phan/releases/download/0.6/phan.phar -o phan.phar \
-  && chmod +x phan.phar \
-  && mv phan.phar /usr/local/bin/phan
 
 #install drush, to use for site and module installs
 RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
@@ -59,16 +55,21 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
+RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
   && apt-get install -y nodejs
 
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update && apt-get install yarn
 
-RUN curl -sS https://platform.sh/cli/installer | php
+# Install SensioLabs' security advisories checker
+RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
+  && chmod +x security-checker.phar \
+  && mv security-checker.phar /usr/local/bin/security-checker
 
 RUN pecl install xdebug \
     && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN curl -sS https://platform.sh/cli/installer | php

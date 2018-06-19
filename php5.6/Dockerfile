@@ -44,15 +44,13 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
+RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
   && apt-get install -y nodejs
 
-RUN npm install -g gulp-cli \
-  && npm install -g gulp-sass
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update && apt-get install yarn
 
 RUN curl -sS https://platform.sh/cli/installer | php
-
-RUN pecl install xdebug \
-    && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini

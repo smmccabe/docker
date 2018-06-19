@@ -22,11 +22,6 @@ RUN git clone https://github.com/nikic/php-ast.git \
   && cd .. \
   && rm php-ast -rf
 
-#install phan
-RUN curl -L https://github.com/etsy/phan/releases/download/0.6/phan.phar -o phan.phar \
-  && chmod +x phan.phar \
-  && mv phan.phar /usr/local/bin/phan
-
 #install drush, to use for site and module installs
 RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
   && chmod +x drush.phar \
@@ -61,16 +56,10 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh \
+RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
   && apt-get install -y nodejs
-
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-
-RUN export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" \
-  && yarn global add  gulp-cli \
-  && yarn global add gulp-sass
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
@@ -82,5 +71,7 @@ RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker
   && mv security-checker.phar /usr/local/bin/security-checker
 
 # Xdebug requires beta to support PHP 7.2.
-RUN pecl install xdebug-2.6.0beta1 \
+RUN pecl install xdebug \
     && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN curl -sS https://platform.sh/cli/installer | php
