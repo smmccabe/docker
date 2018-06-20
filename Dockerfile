@@ -56,6 +56,10 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
+RUN composer global require phpmd/phpmd
+
+RUN composer global require sebastian/phpcpd
+
 RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
