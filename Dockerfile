@@ -25,7 +25,7 @@ RUN git clone https://github.com/nikic/php-ast.git \
 #install drush, to use for site and module installs
 RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
   && chmod +x drush.phar \
-  && mv drush.phar /usr/local/bin
+  && mv drush.phar /usr/local/bin/drush
 
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
