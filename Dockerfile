@@ -4,7 +4,7 @@ RUN a2enmod rewrite
 
 # install the PHP extensions we need
 
-RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev libxml2-dev
+RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev libxml2-dev acl chromedriver
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 RUN rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
@@ -25,7 +25,7 @@ RUN git clone https://github.com/nikic/php-ast.git \
 #install drush, to use for site and module installs
 RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
   && chmod +x drush.phar \
-  && mv drush.phar /usr/local/bin
+  && mv drush.phar /usr/local/bin/drush
 
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
