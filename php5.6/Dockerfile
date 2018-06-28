@@ -48,6 +48,8 @@ RUN composer global require phpmd/phpmd
 
 RUN composer global require sebastian/phpcpd
 
+RUN composer global require smmccabe/phpdebt
+
 RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
