@@ -3,7 +3,7 @@ FROM php:5.6-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev acl unzip gnupg bc
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev acl unzip gnupg bc bzip2
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/
 RUN rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
@@ -11,6 +11,12 @@ RUN docker-php-ext-configure gmp
 RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp
 
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
+
+#install phantomjs
+RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
+  && tar jxf phantomjs-2.1.1-linux-x86_64.tar.bz2 \
+  && mv phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs \
+  && chmod +x /usr/local/bin/phantomjs
 
 #install latest chrome
 RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
