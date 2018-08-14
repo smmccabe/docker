@@ -103,3 +103,5 @@ RUN pecl install xdebug \
     && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN curl -sS https://platform.sh/cli/installer | php
+
+RUN apt-get install shellcheck
