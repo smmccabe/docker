@@ -84,3 +84,5 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && apt-get update && apt-get install yarn
 
 RUN curl -sS https://platform.sh/cli/installer | php
+
+RUN apt-get install shellcheck
