@@ -86,7 +86,7 @@ RUN wget https://raw.githubusercontent.com/smmccabe/readmecheck/master/readmeche
   && chmod +x readmecheck \
   && mv readmecheck /usr/local/bin/readmecheck
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
+RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
   && apt-get install -y nodejs
