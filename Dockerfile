@@ -43,7 +43,7 @@ RUN git clone https://github.com/nikic/php-ast.git \
   && rm php-ast -rf
 
 #install drush, to use for site and module installs
-RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
+RUN wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar \
   && chmod +x drush.phar \
   && mv drush.phar /usr/local/bin/drush
 
@@ -82,15 +82,18 @@ RUN composer global require sebastian/phpcpd
 
 RUN composer global require smmccabe/phpdebt
 
+# Readme check
 RUN wget https://raw.githubusercontent.com/smmccabe/readmecheck/master/readmecheck \
   && chmod +x readmecheck \
   && mv readmecheck /usr/local/bin/readmecheck
 
+# Node
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
   && bash nodesource_setup.sh \
   && rm nodesource_setup.sh \
   && apt-get install -y nodejs
 
+# Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update && apt-get install yarn
