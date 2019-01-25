@@ -4,7 +4,9 @@ RUN a2enmod rewrite
 
 # install the PHP extensions we need
 
-RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget
+RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev
+RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget libzip-dev
+RUN pecl install xdebug-2.7.0beta1 && docker-php-ext-enable xdebug
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 RUN rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
@@ -102,9 +104,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
   && chmod +x security-checker.phar \
   && mv security-checker.phar /usr/local/bin/security-checker
-
-RUN pecl install xdebug \
-    && echo "zend_extension=$(find / -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
