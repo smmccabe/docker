@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev mysql-
 RUN apt-get update && apt-get install -y gnupg
 RUN rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
-RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp
+RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp pcntl
 
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
 
