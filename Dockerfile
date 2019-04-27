@@ -109,6 +109,6 @@ RUN curl -sS https://platform.sh/cli/installer | php
 
 RUN apt-get install shellcheck
 
-RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.2/commercebot-linux \ 
+RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \ 
   && chmod +x commercebot-linux \ 
   && mv commercebot-linux /usr/local/bin/commercebot
