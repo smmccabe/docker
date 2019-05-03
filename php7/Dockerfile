@@ -42,7 +42,7 @@ RUN git clone https://github.com/nikic/php-ast.git \
   && rm php-ast -rf
 
 #install drush, to use for site and module installs
-RUN curl -L -o drush.phar $(curl -s  https://api.github.com/repos/drush-ops/drush/releases/latest | grep drush/releases/download | cut -d '"' -f 4) \
+RUN wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar \
   && chmod +x drush.phar \
   && mv drush.phar /usr/local/bin/drush
 
@@ -69,17 +69,25 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar \
 
 #code standards
 RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
- && chmod +x phpcs.phar \
- && mv phpcs.phar /usr/local/bin/phpcs
+  && chmod +x phpcs.phar \
+  && mv phpcs.phar /usr/local/bin/phpcs
 
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
-RUN composer global require phpmd/phpmd
+RUN wget https://github.com/smmccabe/phpmd/releases/download/2.7.0/phpmd.phar \
+  && chmod +x phpmd.phar \
+  && mv phpmd.phar /usr/local/bin/phpmd
+
+RUN wget https://github.com/smmccabe/phpdebt/releases/download/0.4.0/phpdebt \
+  && chmod +x phpdebt \
+  && mv phpdebt /usr/local/bin/phpdebt
+
+RUN wget https://phar.phpunit.de/phploc.phar \
+  && chmod +x phploc.phar \
+  && mv phploc.phar /usr/local/bin/phploc
 
 RUN composer global require sebastian/phpcpd
-
-RUN composer global require smmccabe/phpdebt
 
 RUN wget https://raw.githubusercontent.com/smmccabe/readmecheck/master/readmecheck \
   && chmod +x readmecheck \
@@ -105,3 +113,8 @@ RUN pecl install xdebug \
 RUN curl -sS https://platform.sh/cli/installer | php
 
 RUN apt-get install shellcheck
+
+RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \
+  && chmod +x commercebot-linux \
+  && mv commercebot-linux /usr/local/bin/commercebot
+
