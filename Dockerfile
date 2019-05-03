@@ -82,9 +82,9 @@ RUN wget https://github.com/smmccabe/phpmd/releases/download/2.7.0/phpmd.phar \
   && chmod +x phpmd.phar \
   && mv phpmd.phar /usr/local/bin/phpmd
 
-RUN wget https://github.com/smmccabe/phpdebt/releases/download/0.3.0/phpdebt.phar \
-  && chmod +x phpdebt.phar \ 
-  && mv phpdebt.phar /usr/local/bin/phpdebt
+RUN wget https://github.com/smmccabe/phpdebt/releases/download/0.4.0/phpdebt \
+  && chmod +x phpdebt \ 
+  && mv phpdebt /usr/local/bin/phpdebt
 
 RUN wget https://phar.phpunit.de/phploc.phar \
   && chmod +x phploc.phar \
