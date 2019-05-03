@@ -72,17 +72,25 @@ RUN curl https://drupalconsole.com/installer -L -o drupal.phar \
 
 #code standards
 RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
- && chmod +x phpcs.phar \
- && mv phpcs.phar /usr/local/bin/phpcs
+  && chmod +x phpcs.phar \
+  && mv phpcs.phar /usr/local/bin/phpcs
 
 RUN composer global require drupal/coder \
   && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
-RUN composer global require phpmd/phpmd
+RUN wget https://github.com/smmccabe/phpmd/releases/download/2.7.0/phpmd.phar \
+  && chmod +x phpmd.phar \
+  && mv phpmd.phar /usr/local/bin/phpmd
+
+RUN wget https://github.com/smmccabe/phpdebt/releases/download/0.3.0/phpdebt.phar \
+  && chmod +x phpdebt.phar \ 
+  && mv phpdebt.phar /usr/local/bin/phpdebt
+
+RUN wget https://phar.phpunit.de/phploc.phar \
+  && chmod +x phploc.phar \
+  && mv phploc.phar /usr/local/bin/phploc
 
 RUN composer global require sebastian/phpcpd
-
-RUN composer global require smmccabe/phpdebt
 
 # Readme check
 RUN wget https://raw.githubusercontent.com/smmccabe/readmecheck/master/readmecheck \
@@ -90,9 +98,7 @@ RUN wget https://raw.githubusercontent.com/smmccabe/readmecheck/master/readmeche
   && mv readmecheck /usr/local/bin/readmecheck
 
 # Node
-RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
-  && bash nodesource_setup.sh \
-  && rm nodesource_setup.sh \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get install -y nodejs
 
 # Yarn
