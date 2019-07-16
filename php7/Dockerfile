@@ -112,6 +112,7 @@ RUN pecl install xdebug \
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
+# Install shellcheck utility.
 RUN SCVERSION="stable" \
   && apt-get install xz-utils \
   && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
