@@ -4,7 +4,7 @@ RUN a2enmod rewrite
 
 # install the PHP extensions we need
 
-RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev
+RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev default-mysql-client git libbz2-dev
 RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget libzip-dev
 RUN pecl install xdebug-2.7.0beta1 && docker-php-ext-enable xdebug
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
