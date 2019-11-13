@@ -3,7 +3,6 @@ FROM php:apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-
 RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev default-mysql-client git libbz2-dev
 RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget libzip-dev
 RUN pecl install xdebug-2.7.0beta1 && docker-php-ext-enable xdebug
@@ -118,3 +117,5 @@ RUN apt-get install shellcheck
 RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \ 
   && chmod +x commercebot-linux \ 
   && mv commercebot-linux /usr/local/bin/commercebot
+  
+RUN apt-get update && apt-get install -y rsync  
