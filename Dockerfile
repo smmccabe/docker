@@ -3,7 +3,6 @@ FROM php:apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-
 RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev mysql-client git libbz2-dev
 RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget libzip-dev
 RUN pecl install xdebug-2.7.0beta1 && docker-php-ext-enable xdebug
@@ -44,16 +43,11 @@ RUN git clone https://github.com/nikic/php-ast.git \
   && cd .. \
   && rm php-ast -rf
 
-#install drush, to use for site and module installs
-RUN wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar \
-  && chmod +x drush.phar \
-  && mv drush.phar /usr/local/bin/drush
-
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
 
 # Add global binary directory to PATH and make sure to re-export it
-ENV PATH /composer/vendor/bin:$PATH
+ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 
 # Allow Composer to be run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -64,19 +58,6 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 
 #allows for parallel composer downloads
 RUN composer global require "hirak/prestissimo:^0.3"
-
-#drupal console
-RUN curl https://drupalconsole.com/installer -L -o drupal.phar \
-  && chmod +x drupal.phar \
-  && mv drupal.phar /usr/local/bin/drupal
-
-#code standards
-RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
-  && chmod +x phpcs.phar \
-  && mv phpcs.phar /usr/local/bin/phpcs
-
-RUN composer global require drupal/coder \
-  && phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
 
 RUN wget https://github.com/smmccabe/phpmd/releases/download/2.7.0/phpmd.phar \
   && chmod +x phpmd.phar \
