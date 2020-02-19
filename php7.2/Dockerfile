@@ -94,7 +94,15 @@ RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
-RUN apt-get install shellcheck
+# Install shellcheck utility.
+RUN SCVERSION="stable" \
+  && apt-get install xz-utils \
+  && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
+  && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz \
+  && sha512sum -c shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
+  && tar -xJvf shellcheck-${SCVERSION}.linux.x86_64.tar.xz \
+  && mv "shellcheck-${SCVERSION}/shellcheck" /usr/local/bin/ \
+  && rm -rf "shellcheck-${SCVERSION}"
 
 RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \
   && chmod +x commercebot-linux \
