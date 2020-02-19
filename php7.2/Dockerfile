@@ -1,14 +1,14 @@
-FROM php:apache
+FROM php:7.2-apache
 
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev default-mysql-client git libbz2-dev
+RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev default-mysql-client git libbz2-dev libonig-dev
 RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget libzip-dev
-RUN pecl install xdebug-2.7.0beta1 && docker-php-ext-enable xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 RUN rm -rf /var/lib/apt/lists/*
-RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
+RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap
 
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
@@ -59,12 +59,12 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 #allows for parallel composer downloads
 RUN composer global require "hirak/prestissimo:^0.3"
 
-RUN wget https://github.com/smmccabe/phpmd/releases/download/2.7.0/phpmd.phar \
+RUN wget -c https://phpmd.org/static/latest/phpmd.phar \
   && chmod +x phpmd.phar \
   && mv phpmd.phar /usr/local/bin/phpmd
 
 RUN wget https://github.com/smmccabe/phpdebt/releases/download/0.4.0/phpdebt \
-  && chmod +x phpdebt \ 
+  && chmod +x phpdebt \
   && mv phpdebt /usr/local/bin/phpdebt
 
 RUN wget https://phar.phpunit.de/phploc.phar \
@@ -96,8 +96,8 @@ RUN curl -sS https://platform.sh/cli/installer | php
 
 RUN apt-get install shellcheck
 
-RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \ 
-  && chmod +x commercebot-linux \ 
+RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \
+  && chmod +x commercebot-linux \
   && mv commercebot-linux /usr/local/bin/commercebot
-  
+
 RUN apt-get update && apt-get install -y rsync  
