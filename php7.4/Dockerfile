@@ -4,7 +4,7 @@ RUN a2enmod rewrite
 
 # install the PHP extensions we need
 RUN apt-get update && apt-get install -y gnupg libpng-dev libjpeg-dev libpq-dev default-mysql-client git libbz2-dev libonig-dev
-RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip gnupg bc bzip2 wget libzip-dev libxslt-dev
+RUN apt-get update && apt-get install -y libgmp-dev libxml2-dev acl unzip bc bzip2 wget libzip-dev libxslt-dev
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 RUN rm -rf /var/lib/apt/lists/*
@@ -94,7 +94,15 @@ RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
-RUN apt-get install shellcheck
+# Install shellcheck utility.
+RUN SCVERSION="stable" \
+  && apt-get install xz-utils \
+  && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
+  && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz \
+  && sha512sum -c shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
+  && tar -xJvf shellcheck-${SCVERSION}.linux.x86_64.tar.xz \
+  && mv "shellcheck-${SCVERSION}/shellcheck" /usr/local/bin/ \
+  && rm -rf "shellcheck-${SCVERSION}"
 
 RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \ 
   && chmod +x commercebot-linux \ 
