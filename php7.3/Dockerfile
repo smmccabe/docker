@@ -104,7 +104,7 @@ RUN SCVERSION="stable" \
   && mv "shellcheck-${SCVERSION}/shellcheck" /usr/local/bin/ \
   && rm -rf "shellcheck-${SCVERSION}"
 
-RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \
+RUN wget https://github.com/smmccabe/commercebot/releases/download/v0.0.4/commercebot-linux \
   && chmod +x commercebot-linux \
   && mv commercebot-linux /usr/local/bin/commercebot
 
