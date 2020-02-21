@@ -104,8 +104,6 @@ RUN SCVERSION="stable" \
   && mv "shellcheck-${SCVERSION}/shellcheck" /usr/local/bin/ \
   && rm -rf "shellcheck-${SCVERSION}"
 
-RUN wget https://github.com/smmccabe/commercebot/releases/download/0.0.3/commercebot-linux \
-  && chmod +x commercebot-linux \
-  && mv commercebot-linux /usr/local/bin/commercebot
+RUN npm -g install smmccabe/commercebot
 
 RUN apt-get update && apt-get install -y rsync  
