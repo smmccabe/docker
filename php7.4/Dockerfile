@@ -64,9 +64,9 @@ RUN wget -c https://phpmd.org/static/latest/phpmd.phar \
   && chmod +x phpmd.phar \
   && mv phpmd.phar /usr/local/bin/phpmd
 
-RUN wget https://github.com/smmccabe/phpdebt/releases/download/0.4.0/phpdebt \
-  && chmod +x phpdebt \ 
-  && mv phpdebt /usr/local/bin/phpdebt
+RUN wget https://github.com/smmccabe/phpdebt/releases/download/1.0.2/phpdebt.phar \
+  && chmod +x phpdebt.phar \
+  && mv phpdebt.phar /usr/local/bin/phpdebt
 
 RUN wget https://phar.phpunit.de/phploc.phar \
   && chmod +x phploc.phar \
