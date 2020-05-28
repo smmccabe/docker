@@ -44,6 +44,9 @@ RUN git clone https://github.com/nikic/php-ast.git \
   && cd .. \
   && rm php-ast -rf
 
+# Composer
+##########
+
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
 
@@ -57,8 +60,20 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer && rm -rf /tmp/composer-setup.php
 
-#allows for parallel composer downloads
+# Allows for parallel composer downloads
 RUN composer global require "hirak/prestissimo:^0.3"
+
+# Install copy paste detector
+RUN composer global require sebastian/phpcpd
+
+# Include PHPCS as a global composer package
+# Then gets the Drupal standards
+RUN composer global require squizlabs/php_codesniffer
+RUN composer global require drupal/coder
+RUN phpcs --config-set installed_paths /composer/vendor/drupal/coder/coder_sniffer
+
+# Phars
+#######
 
 RUN wget -c https://phpmd.org/static/latest/phpmd.phar \
   && chmod +x phpmd.phar \
@@ -71,8 +86,6 @@ RUN wget https://github.com/smmccabe/phpdebt/releases/download/1.0.2/phpdebt.pha
 RUN wget https://phar.phpunit.de/phploc.phar \
   && chmod +x phploc.phar \
   && mv phploc.phar /usr/local/bin/phploc
-
-RUN composer global require sebastian/phpcpd
 
 # Readme check
 RUN wget https://raw.githubusercontent.com/smmccabe/readmecheck/master/readmecheck \
@@ -106,5 +119,5 @@ RUN SCVERSION="stable" \
   && rm -rf "shellcheck-${SCVERSION}"
 
 RUN npm -g install smmccabe/commercebot
-  
-RUN apt-get update && apt-get install -y rsync  
+
+RUN apt-get update && apt-get install -y rsync
