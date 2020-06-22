@@ -9,7 +9,7 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 RUN rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap xsl
+RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap xsl intl
 RUN pecl install pcov && docker-php-ext-enable pcov
 
 RUN echo 'sendmail_path=/bin/true' > /usr/local/etc/php/conf.d/sendmail.ini
@@ -98,9 +98,7 @@ RUN curl -sS https://platform.sh/cli/installer | php
 # Install shellcheck utility.
 RUN SCVERSION="stable" \
   && apt-get install xz-utils \
-  && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
-  && curl -sLO https://storage.googleapis.com/shellcheck/shellcheck-${SCVERSION}.linux.x86_64.tar.xz \
-  && sha512sum -c shellcheck-${SCVERSION}.linux.x86_64.tar.xz.sha512sum \
+  && curl -sLO https://github.com/koalaman/shellcheck/releases/download/${SCVERSION?}/shellcheck-${SCVERSION?}.linux.x86_64.tar.xz \
   && tar -xJvf shellcheck-${SCVERSION}.linux.x86_64.tar.xz \
   && mv "shellcheck-${SCVERSION}/shellcheck" /usr/local/bin/ \
   && rm -rf "shellcheck-${SCVERSION}"
