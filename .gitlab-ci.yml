@@ -16,6 +16,7 @@ build_only:
   except:
     - master
   script:  
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.4 php8.0
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.4 php7.4
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.3 php7.3
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.2 php7.2
@@ -28,8 +29,11 @@ build_deploy:
   script:  
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
 
-    - docker build --no-cache -t $CI_REGISTRY/$CI_PROJECT_PATH:latest php7.4
+    - docker build --no-cache -t $CI_REGISTRY/$CI_PROJECT_PATH:latest php8.0
     - docker push $CI_REGISTRY/$CI_PROJECT_PATH:latest
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php8.0 php8.0
+    - docker push $CI_REGISTRY/$CI_PROJECT_PATH:php8.0
+    
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.4 php7.4
     - docker push $CI_REGISTRY/$CI_PROJECT_PATH:php7.4
 
