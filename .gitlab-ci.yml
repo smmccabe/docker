@@ -20,6 +20,7 @@ build_only:
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.4 php7.4
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.3 php7.3
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.2 php7.2
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.4-composer-1 php7.4-composer-1
   
 build_deploy:
   extends: .docker
@@ -42,3 +43,6 @@ build_deploy:
     
     - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.2 php7.2
     - docker push $CI_REGISTRY/$CI_PROJECT_PATH:php7.2
+
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:php7.4-composer-1 php7.4-composer-1
+    - docker push $CI_REGISTRY/$CI_PROJECT_PATH:php7.4-composer-1
