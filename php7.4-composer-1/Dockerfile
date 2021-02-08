@@ -86,10 +86,9 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update && apt-get install yarn
 
-# Install SensioLabs' security advisories checker
-RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
-  && chmod +x security-checker.phar \
-  && mv security-checker.phar /usr/local/bin/security-checker
+# Install Symfony to use security checker
+RUN curl -sS https://get.symfony.com/cli/installer | bash \
+  && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
