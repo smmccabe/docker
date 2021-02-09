@@ -86,10 +86,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && apt-get update && apt-get install yarn
 
-# Install SensioLabs' security advisories checker
-RUN curl -sL http://get.sensiolabs.org/security-checker.phar -o security-checker.phar \
-  && chmod +x security-checker.phar \
-  && mv security-checker.phar /usr/local/bin/security-checker
+# Install security advisories checker
+RUN curl -sL https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 -o security-checker \
+    && chmod +x security-checker \
+    && mv security-checker /usr/local/bin/security-checker
 
 RUN curl -sS https://platform.sh/cli/installer | php
 
