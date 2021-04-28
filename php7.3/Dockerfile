@@ -55,8 +55,7 @@ ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install composer
-RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
-  && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer && rm -rf /tmp/composer-setup.php
+COPY --from=composer:2.0 /usr/bin/composer /usr/local/bin/
 
 RUN wget -c https://phpmd.org/static/latest/phpmd.phar \
   && chmod +x phpmd.phar \
@@ -103,4 +102,4 @@ RUN SCVERSION="stable" \
 
 RUN npm -g install smmccabe/commercebot
 
-RUN apt-get update && apt-get install -y rsync  
+RUN apt-get update && apt-get install -y rsync

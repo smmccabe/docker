@@ -9,7 +9,7 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 RUN rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap xsl intl calendar 
+RUN docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip bcmath bz2 gmp soap xsl intl calendar
 RUN pecl install imagick && docker-php-ext-enable imagick
 RUN pecl install pcov && docker-php-ext-enable pcov
 
@@ -55,8 +55,7 @@ ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install composer
-RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
-  && php /tmp/composer-setup.php --version=1.10.17 --no-ansi --install-dir=/usr/local/bin --filename=composer && rm -rf /tmp/composer-setup.php
+COPY --from=composer:1.0 /usr/bin/composer /usr/local/bin/
 
 RUN wget -c https://phpmd.org/static/latest/phpmd.phar \
   && chmod +x phpmd.phar \
@@ -102,5 +101,5 @@ RUN SCVERSION="stable" \
   && rm -rf "shellcheck-${SCVERSION}"
 
 RUN npm -g install smmccabe/commercebot
-  
-RUN apt-get update && apt-get install -y rsync  
+
+RUN apt-get update && apt-get install -y rsync
