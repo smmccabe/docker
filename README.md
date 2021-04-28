@@ -1,5 +1,7 @@
 ## Current Images
 * latest/php7.4
+* php7.4
+* php7.4-composer-1
 * php7.3
 * php7.2
 
